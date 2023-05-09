@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Snake Game</title>
+    <style>
+      table {
+        border: 1px solid #ddd;
+        background: rgb(164 181 151 / 29%);
+      }
+      td {
+        outline: 1px solid white;
+        width: 25px;
+        height: 25px;
+        border-collapse:collapse;
+      }
+      #table{
+        position: relative;
+        margin: 0 auto;
+        max-width: 600px;
+      }
+      #gameover{
+        position: absolute;
+        left: 40%;
+        top: 40%;
+        background: #FFF;
+        padding: 15px;
+        font-size: 20px;
+        border-radius: 10px;
+        display: none;
+      }
+      .invisible{
+        background: rgb(164 181 151 / 29%);
+        box-shadow: inset 0px 0px 5px 0px #b1cbb2;
+      }
+      .food{
+        animation: zoom-in-zoom-out 1s ease infinite;
+        background: #fffefe;
+        border-radius: 50%;
+      }
+      .blue{
+        background: #3e9ccd;
+        box-shadow: inset 0px 0px 6px 0px #000;
+        border-radius: 50%;
+      }
+      .container {
+        max-width: 1060px;
+        margin: auto;
+      }
+      @keyframes zoom-in-zoom-out {
+        0% {
+          transform: scale(1, 1);
+        }
+        50% {
+          transform: scale(1.5, 1.5);
+        }
+        100% {
+          transform: scale(1, 1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <div class="container">
+        <div id="table"></div>
+        <div id="gameover">Game Over</div>
+        <script>
+          var ROWS = 20;
+          var COLS = 20;
+          var board = [];
+          var snake = [];
+          var snake_length = 4;
+          var snake_direction = 'right';
+          var food = {};
+          var score = 0;
+          var table = document.getElementById('table');
+          var gameover = document.getElementById('gameover');
+
+          function init() {
+            for (var i = 0; i < ROWS; i++) {
+              board[i] = [];
+              var row = document.createElement('tr');
+              for (var j = 0; j < COLS; j++) {
+                board[i][j] = 0;
+                var cell = document.createElement('td');
+                row.appendChild(cell);
+              }
+              table.appendChild(row);
+            }
+
+            // Initialize snake at center
+            var row = Math.floor(ROWS/2);
+            var col = Math.floor(COLS/2);
+            for (var i = 0; i < snake_length; i++) {
+              snake.push({row: row, col: col-i});
+              board[row][col-i] = 1;
+            }
+
+            // Generate food
+            generate_food();
+
+            // Start the game loop
+            setInterval(game_loop, 100);
+          }
+
+          function game_loop() {
+            // Move snake
+           
